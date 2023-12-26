@@ -356,10 +356,6 @@ namespace Unity.WebRTC
             }
         }
 
-        private RTCPeerConnection GetOtherPc(RTCPeerConnection pc)
-        {
-            return (pc == _pc1) ? _pc2 : _pc1;
-        }
 
         private IEnumerator OnCreateOfferSuccess(RTCPeerConnection pc, RTCSessionDescription desc)
         {
@@ -390,6 +386,11 @@ namespace Unity.WebRTC
             {
                 yield return OnCreateAnswerSuccess(otherPc, op3.Desc);
             }
+        }
+        
+        private RTCPeerConnection GetOtherPc(RTCPeerConnection pc)
+        {
+            return (pc == _pc1) ? _pc2 : _pc1;
         }
 
 
