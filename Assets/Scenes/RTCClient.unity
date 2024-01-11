@@ -218,7 +218,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &923574886
 GameObject:
@@ -231,7 +231,7 @@ GameObject:
   - component: {fileID: 923574888}
   - component: {fileID: 923574887}
   m_Layer: 0
-  m_Name: CLIENT2 -- ReceivedAudio
+  m_Name: Client 2 - ReceivedAudio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -346,7 +346,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &975034752
 GameObject:
@@ -691,7 +691,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1217926199
 GameObject:
@@ -788,7 +788,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1249697619
 GameObject:
@@ -802,7 +802,7 @@ GameObject:
   - component: {fileID: 1249697621}
   - component: {fileID: 1249697622}
   m_Layer: 0
-  m_Name: CLIENT1 -- RTC Manager
+  m_Name: Client 1- RTC Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -837,11 +837,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   socketUri: http://localhost:5001
   receivedVideo: {fileID: 1067661378}
-  receivedAudio: {fileID: 0}
-  sendingAudioSource: {fileID: 0}
-  useAudioTrack: 0
-  useVideoTrack: 0
-  useDataTrack: 0
+  receivedAudio: {fileID: 1875281220}
+  sendingAudioSource: {fileID: 1249697622}
   useMic: 1
   senderObject: {fileID: 1217926203}
   receiverObject: {fileID: 596539137}
@@ -849,9 +846,6 @@ MonoBehaviour:
   currentDest: 
   socketId: 
   others: []
-  isWaitingAnswer: 0
-  isWaitingEnd: 0
-  isDest: 0
 --- !u!82 &1249697622
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1043,7 +1037,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1362918931
 GameObject:
@@ -1140,7 +1134,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1643105081
 GameObject:
@@ -1153,7 +1147,7 @@ GameObject:
   - component: {fileID: 1643105084}
   - component: {fileID: 1643105083}
   m_Layer: 0
-  m_Name: CLIENT1 -- CAMERA
+  m_Name: Client 1 - CAMERA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1312,7 +1306,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1721969387
 GameObject:
@@ -1410,7 +1404,7 @@ GameObject:
   - component: {fileID: 1814237054}
   - component: {fileID: 1814237056}
   m_Layer: 0
-  m_Name: CLIENT2 -- RTC Manager
+  m_Name: Client 2 - RTC Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1431,10 +1425,7 @@ MonoBehaviour:
   socketUri: http://localhost:5001
   receivedVideo: {fileID: 995532791}
   receivedAudio: {fileID: 923574887}
-  sendingAudioSource: {fileID: 0}
-  useAudioTrack: 0
-  useVideoTrack: 0
-  useDataTrack: 0
+  sendingAudioSource: {fileID: 1814237056}
   useMic: 0
   senderObject: {fileID: 1362918935}
   receiverObject: {fileID: 1701955190}
@@ -1442,9 +1433,6 @@ MonoBehaviour:
   currentDest: 
   socketId: 
   others: []
-  isWaitingAnswer: 0
-  isWaitingEnd: 0
-  isDest: 0
 --- !u!4 &1814237055
 Transform:
   m_ObjectHideFlags: 0
@@ -1458,7 +1446,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &1814237056
 AudioSource:
@@ -1567,7 +1555,7 @@ GameObject:
   - component: {fileID: 1875281221}
   - component: {fileID: 1875281220}
   m_Layer: 0
-  m_Name: CLIENT1 -- ReceivedAudio
+  m_Name: Client 1 - ReceivedAudio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1695,7 +1683,7 @@ GameObject:
   - component: {fileID: 1936294069}
   - component: {fileID: 1936294068}
   m_Layer: 0
-  m_Name: CLIENT2 -- CAMERA
+  m_Name: Client 2 - CAMERA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1757,7 +1745,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 88.844, z: 0}
 --- !u!1 &2086245779
 GameObject:
