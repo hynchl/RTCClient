@@ -143,51 +143,51 @@ public class RTCTest : MonoBehaviour
         }
     }
 
-        void OnPause()
-        {
-            var transceiver1 = _pc1.GetTransceivers().First();
-            var track = transceiver1.Sender.Track;
-            track.Enabled = false;
+    void OnPause()
+    {
+        var transceiver1 = _pc1.GetTransceivers().First();
+        var track = transceiver1.Sender.Track;
+        track.Enabled = false;
 
-            // buttonResume.gameObject.SetActive(true);
-            // buttonPause.gameObject.SetActive(false);
-        }
+        // buttonResume.gameObject.SetActive(true);
+        // buttonPause.gameObject.SetActive(false);
+    }
 
-        void OnResume()
-        {
-            var transceiver1 = _pc1.GetTransceivers().First();
-            var track = transceiver1.Sender.Track;
-            track.Enabled = true;
+    void OnResume()
+    {
+        var transceiver1 = _pc1.GetTransceivers().First();
+        var track = transceiver1.Sender.Track;
+        track.Enabled = true;
 
-            // buttonResume.gameObject.SetActive(false);
-            // buttonPause.gameObject.SetActive(true);
-        }
+        // buttonResume.gameObject.SetActive(false);
+        // buttonPause.gameObject.SetActive(true);
+    }
 
-        void OnAddTrack(MediaStreamTrackEvent e)
-        {
-            var track = e.Track as AudioStreamTrack;
-            outputAudioSource.SetTrack(track);
-            outputAudioSource.loop = true;
-            outputAudioSource.Play();
+    void OnAddTrack(MediaStreamTrackEvent e)
+    {
+        var track = e.Track as AudioStreamTrack;
+        outputAudioSource.SetTrack(track);
+        outputAudioSource.loop = true;
+        outputAudioSource.Play();
 
-        }
+    }
 
-        void OnHangUp()
-        {
-            Microphone.End(m_micName);
-            m_clipInput = null;
+    void OnHangUp()
+    {
+        Microphone.End(m_micName);
+        m_clipInput = null;
 
-            m_audioTrack?.Dispose();
-            _receiveStream?.Dispose();
-            _sendStream?.Dispose();
-            _pc1?.Dispose();
-            _pc2?.Dispose();
-            _pc1 = null;
-            _pc2 = null;
+        m_audioTrack?.Dispose();
+        _receiveStream?.Dispose();
+        _sendStream?.Dispose();
+        _pc1?.Dispose();
+        _pc2?.Dispose();
+        _pc1 = null;
+        _pc2 = null;
 
-            inputAudioSource.Stop();
-            outputAudioSource.Stop();
-        }
+        inputAudioSource.Stop();
+        outputAudioSource.Stop();
+    }
 
     IEnumerator PeerNegotiationNeeded(RTCPeerConnection pc)
     {
@@ -210,76 +210,76 @@ public class RTCTest : MonoBehaviour
         }
     }
 
-        private IEnumerator OnCreateOfferSuccess(RTCPeerConnection pc, RTCSessionDescription desc)
+    private IEnumerator OnCreateOfferSuccess(RTCPeerConnection pc, RTCSessionDescription desc)
+    {
+        var op = pc.SetLocalDescription(ref desc);
+        yield return op;
+
+        if (!op.IsError)
         {
-            var op = pc.SetLocalDescription(ref desc);
-            yield return op;
-
-            if (!op.IsError)
-            {
-                OnSetLocalSuccess(pc);
-            }
-            else
-            {
-                var error = op.Error;
-                OnSetSessionDescriptionError(ref error);
-            }
-
-            // 이 파트가 없어져야 할 것 같음
-            var otherPc = GetOtherPc(pc);
-            var op2 = otherPc.SetRemoteDescription(ref desc);
-            yield return op2;
-            if (op2.IsError)
-            {
-                var error = op2.Error;
-                OnSetSessionDescriptionError(ref error);
-            }
-
-            var op3 = otherPc.CreateAnswer();
-            yield return op3;
-            if (!op3.IsError)
-            {
-                yield return OnCreateAnswerSuccess(otherPc, op3.Desc);
-            }
+            OnSetLocalSuccess(pc);
+        }
+        else
+        {
+            var error = op.Error;
+            OnSetSessionDescriptionError(ref error);
         }
 
-        IEnumerator OnCreateAnswerSuccess(RTCPeerConnection pc, RTCSessionDescription desc)
+        // 이 파트가 없어져야 할 것 같음
+        var otherPc = GetOtherPc(pc);
+        var op2 = otherPc.SetRemoteDescription(ref desc);
+        yield return op2;
+        if (op2.IsError)
         {
-            var op = pc.SetLocalDescription(ref desc);
-            yield return op;
-
-            if (!op.IsError) {
-                OnSetLocalSuccess(pc);
-            }
-            else {
-                var error = op.Error;
-                OnSetSessionDescriptionError(ref error);
-            }
-
-            var otherPc = GetOtherPc(pc);
-            var op2 = otherPc.SetRemoteDescription(ref desc);
-            yield return op2;
-            if (op2.IsError) {
-                var error = op2.Error;
-                OnSetSessionDescriptionError(ref error);
-            }
+            var error = op2.Error;
+            OnSetSessionDescriptionError(ref error);
         }
 
-        private RTCPeerConnection GetOtherPc(RTCPeerConnection pc)
+        var op3 = otherPc.CreateAnswer();
+        yield return op3;
+        if (!op3.IsError)
         {
-            return (pc == _pc1) ? _pc2 : _pc1;
+            yield return OnCreateAnswerSuccess(otherPc, op3.Desc);
+        }
+    }
+
+    IEnumerator OnCreateAnswerSuccess(RTCPeerConnection pc, RTCSessionDescription desc)
+    {
+        var op = pc.SetLocalDescription(ref desc);
+        yield return op;
+
+        if (!op.IsError) {
+            OnSetLocalSuccess(pc);
+        }
+        else {
+            var error = op.Error;
+            OnSetSessionDescriptionError(ref error);
         }
 
-
-        private void OnSetLocalSuccess(RTCPeerConnection pc)
-        {
-            Debug.Log("SetLocalDescription complete");
+        var otherPc = GetOtherPc(pc);
+        var op2 = otherPc.SetRemoteDescription(ref desc);
+        yield return op2;
+        if (op2.IsError) {
+            var error = op2.Error;
+            OnSetSessionDescriptionError(ref error);
         }
+    }
 
-        static void OnSetSessionDescriptionError(ref RTCError error)
-        {
-            Debug.LogError($"Error Detail Type: {error.message}");
-        }
+    private RTCPeerConnection GetOtherPc(RTCPeerConnection pc)
+    {
+        return (pc == _pc1) ? _pc2 : _pc1;
+    }
+
+
+    private void OnSetLocalSuccess(RTCPeerConnection pc)
+    {
+        Debug.Log("SetLocalDescription complete");
+    }
+
+    static void OnSetSessionDescriptionError(ref RTCError error)
+    {
+        Debug.LogError($"Error Detail Type: {error.message}");
+    }
 
     
 
@@ -290,90 +290,90 @@ public class RTCTest : MonoBehaviour
     }
 
     private IEnumerator LoopStatsCoroutine()
+    {
+        while (true)
         {
-            while (true)
-            {
-                yield return StartCoroutine(UpdateStatsCoroutine());
-                yield return new WaitForSeconds(1f);
-            }
+            yield return StartCoroutine(UpdateStatsCoroutine());
+            yield return new WaitForSeconds(1f);
         }
+    }
 
     private IEnumerator UpdateStatsCoroutine()
+    {
+        RTCRtpSender sender = _pc1?.GetSenders().First();
+        if (sender == null)
+            yield break;
+        RTCStatsReportAsyncOperation op = sender.GetStats();
+        yield return op;
+        if (op.IsError)
         {
-            RTCRtpSender sender = _pc1?.GetSenders().First();
-            if (sender == null)
-                yield break;
-            RTCStatsReportAsyncOperation op = sender.GetStats();
-            yield return op;
-            if (op.IsError)
-            {
-                Debug.LogErrorFormat("RTCRtpSender.GetStats() is failed {0}", op.Error.errorType);
-            }
-            else
-            {
-                UpdateStatsPacketSize(op.Value);
-            }
+            Debug.LogErrorFormat("RTCRtpSender.GetStats() is failed {0}", op.Error.errorType);
         }
+        else
+        {
+            UpdateStatsPacketSize(op.Value);
+        }
+    }
 
-        void OnDSPBufferSizeChanged(int value)
+    void OnDSPBufferSizeChanged(int value)
+    {
+        var audioConf = AudioSettings.GetConfiguration();
+        audioConf.dspBufferSize = dspBufferSizeOptions.Values.ToArray()[value];
+        if (!AudioSettings.Reset(audioConf))
         {
-            var audioConf = AudioSettings.GetConfiguration();
-            audioConf.dspBufferSize = dspBufferSizeOptions.Values.ToArray()[value];
-            if (!AudioSettings.Reset(audioConf))
-            {
-                Debug.LogError("Failed changing Audio Settings");
-            }
+            Debug.LogError("Failed changing Audio Settings");
         }
-        private RTCStatsReport lastResult = null;
-        private void UpdateStatsPacketSize(RTCStatsReport res)
+    }
+    private RTCStatsReport lastResult = null;
+    private void UpdateStatsPacketSize(RTCStatsReport res)
+    {
+        foreach (RTCStats stats in res.Stats.Values)
         {
-            foreach (RTCStats stats in res.Stats.Values)
+            if (!(stats is RTCOutboundRTPStreamStats report))
             {
-                if (!(stats is RTCOutboundRTPStreamStats report))
-                {
+                continue;
+            }
+
+            long now = report.Timestamp;
+            ulong bytes = report.bytesSent;
+
+            if (lastResult != null)
+            {
+                if (!lastResult.TryGetValue(report.Id, out RTCStats last))
                     continue;
-                }
 
-                long now = report.Timestamp;
-                ulong bytes = report.bytesSent;
-
-                if (lastResult != null)
-                {
-                    if (!lastResult.TryGetValue(report.Id, out RTCStats last))
-                        continue;
-
-                    var lastStats = last as RTCOutboundRTPStreamStats;
-                    var duration = (double)(now - lastStats.Timestamp) / 1000000;
-                    ulong bitrate = (ulong)(8 * (bytes - lastStats.bytesSent) / duration);
-                    // textBandwidth.text = (bitrate / 1000.0f).ToString("f2");
-                    //if (autoScroll.isOn)
-                    //{
-                    //    statsField.MoveTextEnd(false);
-                    //}
-                }
-
+                var lastStats = last as RTCOutboundRTPStreamStats;
+                var duration = (double)(now - lastStats.Timestamp) / 1000000;
+                ulong bitrate = (ulong)(8 * (bytes - lastStats.bytesSent) / duration);
+                // textBandwidth.text = (bitrate / 1000.0f).ToString("f2");
+                //if (autoScroll.isOn)
+                //{
+                //    statsField.MoveTextEnd(false);
+                //}
             }
-            lastResult = res;
-        }
 
-        private void OnBandwidthChanged(ulong bandwidth)
+        }
+        lastResult = res;
+    }
+
+    private void OnBandwidthChanged(ulong bandwidth)
+    {
+        if (_pc1 == null || _pc2 == null)
+            return;
+
+        RTCRtpSender sender = _pc1.GetSenders().First();
+        RTCRtpSendParameters parameters = sender.GetParameters();
+
+        parameters.encodings[0].maxBitrate = bandwidth * 1000;
+        parameters.encodings[0].minBitrate = bandwidth * 1000;
+
+        RTCError error = sender.SetParameters(parameters);
+        if (error.errorType != RTCErrorType.None)
         {
-            if (_pc1 == null || _pc2 == null)
-                return;
-
-            RTCRtpSender sender = _pc1.GetSenders().First();
-            RTCRtpSendParameters parameters = sender.GetParameters();
-
-            parameters.encodings[0].maxBitrate = bandwidth * 1000;
-            parameters.encodings[0].minBitrate = bandwidth * 1000;
-
-            RTCError error = sender.SetParameters(parameters);
-            if (error.errorType != RTCErrorType.None)
-            {
-                Debug.LogErrorFormat("RTCRtpSender.SetParameters failed {0}", error.errorType);
-            }
-
-            Debug.Log("SetParameters:" + bandwidth);
+            Debug.LogErrorFormat("RTCRtpSender.SetParameters failed {0}", error.errorType);
         }
+
+        Debug.Log("SetParameters:" + bandwidth);
+    }
         
 }
